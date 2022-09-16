@@ -15,6 +15,8 @@
 #include <std_msgs/Bool.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/point_cloud_conversion.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
@@ -29,7 +31,7 @@
 #include "../estimator/parameters.h"
 #include <fstream>
 
-extern ros::Publisher pub_odometry;
+extern ros::Publisher pub_odometry, pub_odometry_mavros;
 extern ros::Publisher pub_path, pub_pose;
 extern ros::Publisher pub_cloud, pub_map;
 extern ros::Publisher pub_key_poses;

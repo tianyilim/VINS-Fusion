@@ -38,7 +38,9 @@ int USE_IMU;
 int MULTIPLE_THREAD;
 map<int, Eigen::Vector3d> pts_gt;
 std::string IMAGE0_TOPIC, IMAGE1_TOPIC;
-std::string FISHEYE_MASK;
+int MASKING; //added
+std::string MASKING_PATH;
+cv::Mat MASKING_IMG; //added
 std::vector<std::string> CAM_NAMES;
 int MAX_CNT;
 int MIN_DIST;
@@ -172,6 +174,13 @@ void readParameters(std::string config_file)
         cv::cv2eigen(cv_T, T);
         RIC.push_back(T.block<3, 3>(0, 0));
         TIC.push_back(T.block<3, 1>(0, 3));
+    }
+
+    MASKING = fsSettings["masking"]; // added
+    if (MASKING){
+        fsSettings["mask_img_name"] >> MASKING_PATH; //added
+        std::string absolute_mask_path = configPath + "/" + MASKING_PATH;
+        MASKING_IMG=cv::imread(absolute_mask_path,cv::IMREAD_GRAYSCALE);
     }
 
     INIT_DEPTH = 5.0;
