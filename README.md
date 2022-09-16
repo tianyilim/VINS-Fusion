@@ -48,7 +48,7 @@ Follow [Ceres Installation](http://ceres-solver.org/installation.html).
 Clone the repository and catkin_make:
 ```
     cd ~/catkin_ws/src
-    git clone https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
+    git clone https://github.com/guisoares9/VINS-Fusion.git
     cd ../
     catkin_make
     source ~/catkin_ws/devel/setup.bash
@@ -139,7 +139,7 @@ cd ~/catkin_ws/src/VINS-Fusion/camera_models/camera_calib_example/
 rosrun camera_models Calibrations -w 12 -h 8 -s 80 -i calibrationdata --camera-model pinhole
 ```
 
-## 7. Docker Support
+## 7. Docker Support (ORIGINAL VINS-FUSION)
 To further facilitate the building process, we add docker in our code. Docker environment is like a sandbox, thus makes our code environment-independent. To run with docker, first make sure [ros](http://wiki.ros.org/ROS/Installation) and [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) are installed on your machine. Then add your account to `docker` group by `sudo usermod -aG docker $YOUR_USER_NAME`. **Relaunch the terminal or logout and re-login if you get `Permission denied` error**, type:
 ```
 cd ~/catkin_ws/src/VINS-Fusion/docker
