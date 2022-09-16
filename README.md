@@ -1,3 +1,5 @@
+### *Code adapted for OpenCV 4, Ceres 2.1, and ROS Noetic!*
+
 # VINS-Fusion
 ## An optimization-based multi-sensor state estimator
 
