@@ -258,7 +258,15 @@ int main(int argc, char **argv)
     ros::Subscriber sub_cam_switch = n.subscribe("/vins_cam_switch", 100, cam_switch_callback);
 
     std::thread sync_thread{sync_process};
-    ros::spin();
+
+    // Before killing, dump values to a file
+    while (ros::ok())
+    {
+        ros::spin();
+    }
+
+    memUsage::dumpVectorToFile(estimator.vTimesKeyframes, "VINS_KeyframeTrackTiming.txt");
+    memUsage::dumpVectorToFile(estimator.vMemUsageKeyframes, "VINS_KeyframeMemUsageKB.txt");
 
     return 0;
 }

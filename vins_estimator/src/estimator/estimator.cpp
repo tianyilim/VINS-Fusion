@@ -191,9 +191,16 @@ void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1)
         mBuf.unlock();
         TicToc processTime;
         processMeasurements();
-        printf("process time: %f\n", processTime.toc());
+        const double tTrack = processTime.toc();
+        printf("process time: %f\n", tTrack);
+
+        // Log memory and timing if we are in a single-threaded mode (else it's hard...)
+        if (marginalization_flag) // this is their verison of is_keyframe
+        {
+            vTimesKeyframes.push_back(tTrack / 1000.0); // convert back to seconds
+            vMemUsageKeyframes.push_back(memUsage::getMemUsageKB());
+        }
     }
-    
 }
 
 void Estimator::inputIMU(double t, const Vector3d &linearAcceleration, const Vector3d &angularVelocity)
