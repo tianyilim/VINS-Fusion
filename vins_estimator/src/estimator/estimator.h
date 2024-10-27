@@ -37,6 +37,7 @@
 #include "../featureTracker/feature_tracker.h"
 
 // Some utility functions
+// From https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 namespace memUsage
 {
 
