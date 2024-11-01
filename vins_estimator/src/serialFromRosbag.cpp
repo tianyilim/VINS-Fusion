@@ -238,9 +238,9 @@ int main(int argc, char **argv)
     if (STEREO) {
         topics_to_read.push_back(std::string(IMAGE1_TOPIC));
     }
-    rosbag::View view(bag, rosbag::TopicQuery(topics_to_read));
 
-    for (rosbag::MessageInstance const m : rosbag::View(bag)) {
+    rosbag::View view(bag, rosbag::TopicQuery(topics_to_read));
+    for (rosbag::MessageInstance const m : view) {
         ROS_DEBUG("Read topic [%s]", m.getTopic().c_str());
         if (!ros::ok()) {
             break;
@@ -259,6 +259,7 @@ int main(int argc, char **argv)
             img1_callback(img_msg);
         }
         else {
+            ROS_WARN("Ignoring topic %s", m.getTopic().c_str());
             continue;
         }
 
