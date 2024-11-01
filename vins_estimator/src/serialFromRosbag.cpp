@@ -13,6 +13,7 @@
 #include <ros/ros.h>
 #include <stdio.h>
 
+#include <chrono>
 #include <map>
 #include <mutex>
 #include <opencv2/opencv.hpp>
@@ -240,6 +241,10 @@ int main(int argc, char **argv)
     }
 
     rosbag::View view(bag, rosbag::TopicQuery(topics_to_read));
+
+    // Check if we are faster than just rosbag play :)
+    auto loop_start = std::chrono::high_resolution_clock::now();
+
     for (rosbag::MessageInstance const m : view) {
         ROS_DEBUG("Read topic [%s]", m.getTopic().c_str());
         if (!ros::ok()) {
@@ -266,6 +271,13 @@ int main(int argc, char **argv)
         // Sync process
         if (m.getTopic() != std::string(IMU_TOPIC)) {
             sync_process();
+
+            // Measure time since last loop
+            auto now = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - loop_start);
+            loop_start = now;
+            ROS_DEBUG_THROTTLE(1, "Loop duration: %0.2fd ms | Effective freq: %0.2f Hz",
+                               duration.count(), 1000.0 / duration.count());
         }
     }
 
