@@ -226,4 +226,7 @@ class Estimator
     // Introspect
     vector<double> vTimesKeyframes;
     vector<int> vMemUsageKeyframes;
+
+    // covariance
+    vector<double> covariance_matrix;
 };
