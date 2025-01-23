@@ -1117,16 +1117,11 @@ void Estimator::optimization()
     ROS_DEBUG("visual measurement count: %d", f_m_cnt);
     //printf("prepare for ceres: %f \n", t_prepare.toc());
 
-    // Change this to get covariance
-    // https://github.com/HKUST-Aerial-Robotics/VINS-Mono/issues/74
-    // https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/issues/186
-    
     ceres::Solver::Options options;
 
-    options.linear_solver_type = ceres::ITERATIVE_SCHUR;
-    options.preconditioner_type = ceres::SCHUR_JACOBI;
-    options.num_threads = 6;
-    // options.trust_region_strategy_type = ceres::DOGLEG;
+    options.linear_solver_type = ceres::DENSE_SCHUR;
+    //options.num_threads = 2;
+    options.trust_region_strategy_type = ceres::DOGLEG;
     options.max_num_iterations = NUM_ITERATIONS;
     //options.use_explicit_schur_complement = true;
     //options.minimizer_progress_to_stdout = true;
@@ -1141,46 +1136,6 @@ void Estimator::optimization()
     //cout << summary.BriefReport() << endl;
     ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
     //printf("solver costs: %f \n", t_solver.toc());
-
-    // Covariance Estimation!
-    ceres::Covariance::Options cov_options;
-    cov_options.num_threads = 6;
-    ceres::Covariance covariance(cov_options);
-
-    TicToc t_cov;
-    std::vector<std::pair<const double*, const double*>> covariance_blocks;
-    covariance_blocks.emplace_back(para_Pose[WINDOW_SIZE], para_Pose[WINDOW_SIZE]);
-
-    if (covariance_matrix.size() == 0)
-    {
-        covariance_matrix.assign(36, -1);   // initialize to -1
-    }
-
-    double covariance_pose[SIZE_POSE * SIZE_POSE];
-    if(covariance.Compute(covariance_blocks, &problem))
-    {
-        covariance.GetCovarianceBlock(para_Pose[WINDOW_SIZE], para_Pose[WINDOW_SIZE], covariance_pose);
-        for (int i=0; i<36; i++)
-            covariance_matrix[i] = covariance_pose[i];
-    }
-    else
-    {
-        ROS_DEBUG("covariance computation failed");
-        // Don't update the covariance matrix
-    }
-
-    // Print the 6x6 covariance matrix
-    CHECK(covariance_matrix.size() == 36);
-    cout << "Covariance: " << endl;
-    for (int i=0; i<6; i++)
-    {
-        cout << "[";
-        for (int j=0; j<6; j++)
-        {
-            printf("% 015.5f ", covariance_matrix[i*6 + j]);
-        }
-        cout << "]" << endl;
-    }
 
     double2vector();
     //printf("frame_count: %d \n", frame_count);
