@@ -291,5 +291,9 @@ int main(int argc, char **argv)
     }
 
     bag.close();
+
+    memUsage::dumpVectorToFile(estimator.vTimesKeyframes, "VINS_KeyframeTrackTiming.txt");
+    memUsage::dumpVectorToFile(estimator.vMemUsageKeyframes, "VINS_KeyframeMemUsageKB.txt");
+
     return 0;
 }
