@@ -208,8 +208,13 @@ void cam_switch_callback(const std_msgs::BoolConstPtr &switch_msg)
 
 int main(int argc, char **argv)
 {
-    if (argc != 3) {
+    if (argc < 3) {
         printf("Usage: rosrun vins vins_from_rosbag [full path to config file] [rosbag_path]\n");
+
+        for (int i = 0; i < argc; i++) {
+            printf("argv[%d]: %s\n", i, argv[i]);
+        }
+
         return 1;
     }
 
@@ -231,6 +236,8 @@ int main(int argc, char **argv)
 
     // Setup ROS
     registerPub(n);
+    ros::Publisher pubLeftImage = n.advertise<sensor_msgs::Image>(IMAGE0_TOPIC, 1000);
+    ros::Publisher pubRightImage = n.advertise<sensor_msgs::Image>(IMAGE1_TOPIC, 1000);
 
     // Read topics from rosbag
     std::vector<std::string> topics_to_read;
@@ -258,10 +265,12 @@ int main(int argc, char **argv)
         else if (m.getTopic() == std::string(IMAGE0_TOPIC)) {
             sensor_msgs::ImageConstPtr img_msg = m.instantiate<sensor_msgs::Image>();
             img0_callback(img_msg);
+            pubLeftImage.publish(img_msg);
         }
         else if (m.getTopic() == std::string(IMAGE1_TOPIC)) {
             sensor_msgs::ImageConstPtr img_msg = m.instantiate<sensor_msgs::Image>();
             img1_callback(img_msg);
+            pubRightImage.publish(img_msg);
         }
         else {
             ROS_WARN("Ignoring topic %s", m.getTopic().c_str());
