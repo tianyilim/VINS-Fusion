@@ -502,7 +502,7 @@ int main(int argc, char **argv)
     }
 
     // Save pose graph
-    posegraph.savePoseGraph();
+    // posegraph.savePoseGraph();
 
     return 0;
 }
