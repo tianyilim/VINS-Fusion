@@ -601,6 +601,8 @@ void PoseGraph::optimize4DoF()
                 (*it)->updatePose(P, R);
             }
             m_keyframelist.unlock();
+
+            ROS_WARN("Successfully optimize pose graph");
             updatePath();
         }
 
@@ -833,14 +835,14 @@ void PoseGraph::updatePath()
             loop_path_file.precision(0);
             loop_path_file << (*it)->time_stamp * 1e9 << ",";
             loop_path_file.precision(5);
-            loop_path_file  << P.x() << ","
-                  << P.y() << ","
-                  << P.z() << ","
-                  << Q.w() << ","
-                  << Q.x() << ","
-                  << Q.y() << ","
-                  << Q.z() << ","
-                  << endl;
+            loop_path_file  << P.x() << " "
+                            << P.y() << " "
+                            << P.z() << " "
+                            << Q.x() << " "
+                            << Q.y() << " "
+                            << Q.z() << " "
+                            << Q.w() << " "
+                            << endl;
             loop_path_file.close();
         }
         //draw local connection

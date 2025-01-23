@@ -497,7 +497,12 @@ int main(int argc, char **argv)
     measurement_process = std::thread(process);
     keyboard_command_process = std::thread(command);
     
-    ros::spin();
+    while (ros::ok()) {
+        ros::spin();
+    }
+
+    // Save pose graph
+    posegraph.savePoseGraph();
 
     return 0;
 }
