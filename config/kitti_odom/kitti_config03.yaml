@@ -11,8 +11,8 @@ output_path: "/home/tony-ws1/output/"
 
 cam0_calib: "cam03.yaml"
 cam1_calib: "cam03.yaml"
-image_width: 1241
-image_height: 376
+image_width: 1242
+image_height: 375
    
 
 # Extrinsic parameter between IMU and Camera.

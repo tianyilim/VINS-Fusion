@@ -11,8 +11,8 @@ output_path: "/home/tony-ws1/output/"
 
 cam0_calib: "cam04-12.yaml"
 cam1_calib: "cam04-12.yaml"
-image_width: 1241
-image_height: 376
+image_width: 1226
+image_height: 370
    
 # Extrinsic parameter between IMU and Camera.
 estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
